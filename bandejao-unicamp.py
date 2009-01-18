@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- encoding: utf8 -*-
+# -*- coding: utf-8 -*-
 
 from BeautifulSoup import BeautifulSoup, BeautifulStoneSoup
 from xml.sax.saxutils import unescape
