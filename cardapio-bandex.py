@@ -32,10 +32,10 @@ class Menu(object):
     if not data_re:
       raise ValueError, "Invalid date format"
 
-    if len(data_re.groups()) == 2:
+    if data_re.group(1) is not None:
       short_data = data_re.group(1)[:3] + ' ' + data_re.group(2)
     else:
-      short_data = data_re.group(1)
+      short_data = data_re.group(2)
 
     ## Principal
     short_principal = self.values['principal'].lower(). \
