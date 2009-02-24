@@ -11,6 +11,9 @@ class Menu(object):
     self.fromDict(values)
 
   def fromDict(self, values):
+    """
+    Validates and loads a dict with the menu values
+    """
     if not isinstance(values, dict):
       raise TypeError, "A dict object must be passed to Menu"
 
@@ -21,10 +24,16 @@ class Menu(object):
     self.values = values
 
   def printMenu(self):
+    """
+    Prints the menu in the usual, multi-line way.
+    """
     for key in ('data', 'principal', 'salada', 'sobremesa', 'suco'):
       print '%s: %s' % (key, self.values[key])
 
   def printSMSMenu(self):
+    """
+    Prints the menu in a format suitable for SMS messages.
+    """
     ## Date
     data_re = re.match(r'(?:(.+) - )?([\d]{1,2}/[\d]{1,2})(?:\d{2,4})*',
                        self.values['data'])
@@ -72,6 +81,9 @@ class MenuParser(object):
     self.sourceText = self.getSource()
 
   def getSource(self):
+    """
+    Returns the HTML source which will be parsed.
+    """
     return urllib2.urlopen(MenuParser.SOURCE_URL).read()
 
   def getTagText(self, tag):
@@ -81,6 +93,9 @@ class MenuParser(object):
     return ''.join(tag.findAll(text=True)).replace(unichr(160), ' ')
 
   def parseMenu(self):
+    """
+    Parses an HTML source.
+    """
     soup = BeautifulSoup(self.sourceText,
                          markupMassage = MenuParser.SOURCE_FIXES,
                          convertEntities = BeautifulStoneSoup.HTML_ENTITIES)
