@@ -26,6 +26,12 @@ class Menu(object):
   def __init__(self, values):
     self.fromDict(values)
 
+  data      = property(lambda self: self.values['data'])
+  principal = property(lambda self: self.values['principal'])
+  salada    = property(lambda self: self.values['salada'])
+  sobremesa = property(lambda self: self.values['sobremesa'])
+  suco      = property(lambda self: self.values['suco'])
+
   def fromDict(self, values):
     """
     Validates and loads a dict with the menu values
