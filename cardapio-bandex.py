@@ -122,31 +122,32 @@ class MenuParser(object):
                          markupMassage = MenuParser.SOURCE_FIXES,
                          convertEntities = BeautifulStoneSoup.HTML_ENTITIES)
 
-    menuKeys   = ('data', 'principal', 'sobremesa', 'salada', 'suco')
+    menu = {}
 
-    # Add the entries which have the same format ('key: value')
-    menuBlock  = soup.findAll('p', style="text-align: left")
-    menuValues = []
+    # The code here is not very smart or efficient, but we are trying
+    # to be as much error-proof as possible.
+    # Using the main meal and reading the other entries using it as a
+    # reference point seems to be the best take.
+    mainMeal = soup.find(text = re.compile(r"prato\s+principal", re.IGNORECASE)).parent.parent
+    menu['principal'] = self.getTagText(mainMeal)
 
-    for line in menuBlock:
-      strLine = self.getTagText(line)
-      match   = re.match(r'[\w\s]+:\s*(.+)', strLine)
+    # The date is usually the entry right before the main meal
+    mealDate = mainMeal.findPreviousSibling('p')
+    menu['data'] = self.getTagText(mealDate)
+
+    # The three remaining entries (dessert, salad and juice) are the 3 next siblings
+    for item in mainMeal.findNextSiblings('p', limit=3):
+      match = re.match(r'([\w\s]+):\s*(.+)', self.getTagText(item))
 
       if match:
-        menuValues.append(match.group(1))
+        menu[match.group(1).lower()] = match.group(2)
 
-    # If there were only 4 entries in the usual format, probably date is missing
-    if len(menuValues) == 4:
-      # Add the date, whose format tends to vary.
-      # Finding the main meal and simply retrieving the previous sibling
-      # seems to be the most error-proof method.
-      mainMeal = soup.find(text = re.compile(r"prato\s+principal", re.IGNORECASE)).parent.parent
-      mealDate = mainMeal.findPreviousSibling('p')
-      menuValues = [self.getTagText(mealDate)] + menuValues
-    elif len(menuValues) != 4 and len(menuValues) != 5:
+    # In the end, we shall have a dictionary with the following keys:
+    # 'data', 'principal', 'salada', 'sobremesa', 'suco'
+    if len(menu) != 5:
       raise ValueError, "The menu in the site has an invalid format"
 
-    return Menu(dict(zip(menuKeys, menuValues)))
+    return Menu(menu)
 
 if __name__ == "__main__":
   app = MenuParser()
