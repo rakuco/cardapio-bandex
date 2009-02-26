@@ -34,8 +34,11 @@ class Parser(object):
   ]
   SOURCE_URL = "http://www.prefeitura.unicamp.br/servicos.php?servID=119"
 
-  def __init__(self):
-    self.sourceText = self.getSource()
+  def __init__(self, source = None):
+    if source is None:
+      self.sourceText = self.getSource().read()
+    else:
+      self.sourceText = source.read()
 
   def __getTagText(self, tag):
     """
@@ -45,9 +48,9 @@ class Parser(object):
 
   def getSource(self):
     """
-    Returns the HTML source which will be parsed.
+    Returns the HTML file that should be parsed.
     """
-    return urllib2.urlopen(Parser.SOURCE_URL).read()
+    return urllib2.urlopen(Parser.SOURCE_URL)
 
   def parseMenu(self):
     """
