@@ -17,11 +17,18 @@
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #
 
+"""
+This is a sample program to show what can be done with the library.
+"""
+
 from CardapioBandex import Parser
 
 if __name__ == "__main__":
   app = Parser.Parser()
-
   menu = app.parseMenu()
+
+  # The full-text version of the menu
   menu.printMenu()
+
+  # A compact version, useful for using in SMS
   menu.printSMSMenu()
