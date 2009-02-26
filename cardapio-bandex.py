@@ -24,7 +24,6 @@ except ImportError:
   sys.stderr.write("This program needs BeautifulSoup to run.\n")
   sys.exit(1)
 
-from xml.sax.saxutils import unescape
 import urllib2
 import re
 
