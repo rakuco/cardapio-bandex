@@ -37,17 +37,17 @@ class Parser(object):
   def __init__(self):
     self.sourceText = self.getSource()
 
+  def __getTagText(self, tag):
+    """
+    Receives a Tag object and returns its stripped text.
+    """
+    return ''.join(tag.findAll(text=True)).replace(unichr(160), ' ')
+
   def getSource(self):
     """
     Returns the HTML source which will be parsed.
     """
     return urllib2.urlopen(Parser.SOURCE_URL).read()
-
-  def getTagText(self, tag):
-    """
-    Receives a Tag object and returns its stripped text.
-    """
-    return ''.join(tag.findAll(text=True)).replace(unichr(160), ' ')
 
   def parseMenu(self):
     """
@@ -64,15 +64,15 @@ class Parser(object):
     # Using the main meal and reading the other entries using it as a
     # reference point seems to be the best take.
     mainMeal = soup.find(text = re.compile(r"prato\s+principal", re.IGNORECASE)).parent.parent
-    menu['principal'] = self.getTagText(mainMeal)
+    menu['principal'] = self.__getTagText(mainMeal)
 
     # The date is usually the entry right before the main meal
     mealDate = mainMeal.findPreviousSibling('p')
-    menu['data'] = self.getTagText(mealDate)
+    menu['data'] = self.__getTagText(mealDate)
 
     # The three remaining entries (dessert, salad and juice) are the 3 next siblings
     for item in mainMeal.findNextSiblings('p', limit=3):
-      match = re.match(r'([\w\s]+):\s*(.+)', self.getTagText(item))
+      match = re.match(r'([\w\s]+):\s*(.+)', self.__getTagText(item))
 
       if match:
         menu[match.group(1).lower()] = match.group(2)
