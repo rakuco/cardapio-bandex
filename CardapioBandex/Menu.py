@@ -53,7 +53,7 @@ class Menu(object):
     Prints the menu in a format suitable for SMS messages.
     """
     ## Date
-    data_re = re.match(r'(?:(.+) - )?([\d]{1,2}/[\d]{1,2})(?:\d{2,4})*',
+    data_re = re.match(r'(?:(.+)\s*-\s*)?([\d]{1,2}/[\d]{1,2})(?:\d{2,4})*',
                        self.values['data'])
 
     if not data_re:
