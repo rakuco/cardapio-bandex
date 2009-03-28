@@ -60,25 +60,29 @@ class Parser(object):
                          markupMassage = Parser.SOURCE_FIXES,
                          convertEntities = BeautifulStoneSoup.HTML_ENTITIES)
 
+    keyTranslations = {'prato principal': 'principal',
+                       'salada': 'salada',
+                       'sobremesa': 'sobremesa',
+                       'suco': 'suco'}
     menu = {}
 
     # The code here is not very smart or efficient, but we are trying
     # to be as much error-proof as possible.
     # Using the main meal and reading the other entries using it as a
     # reference point seems to be the best take.
+    # We begin by finding the main meal, parsing the date and then the
+    # meal items.
     mainMeal = soup.find(text = re.compile(r"prato\s+principal", re.IGNORECASE)).parent.parent
-    menu['principal'] = self.__getTagText(mainMeal)
-
-    # The date is usually the entry right before the main meal
     mealDate = mainMeal.findPreviousSibling('p')
     menu['data'] = self.__getTagText(mealDate)
 
-    # The three remaining entries (dessert, salad and juice) are the 3 next siblings
-    for item in mainMeal.findNextSiblings('p', limit=3):
-      match = re.match(r'([\w\s]+):\s*(.+)', self.__getTagText(item))
+    # The four remaining entries (main meal, dessert, salad and juice) are the 4 next siblings
+    for item in mealDate.findNextSiblings('p', limit=4):
+      match = re.match(r'\s*([\w\s]+):\s*(.+)', self.__getTagText(item))
 
       if match:
-        menu[match.group(1).lower()] = match.group(2)
+        key = keyTranslations[match.group(1).lower()]
+        menu[key] = match.group(2)
 
     # In the end, we shall have a dictionary with the following keys:
     # 'data', 'principal', 'salada', 'sobremesa', 'suco'
