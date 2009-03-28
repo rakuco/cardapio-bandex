@@ -1,0 +1,16 @@
+Source: python-cardapiobandex
+Section: web
+Priority: extra
+Maintainer: Raphael Kubo da Costa <kubito@gmail.com>
+Build-Depends: debhelper (>= 7), python, python-dev, python-beautifulsoup (>= 3.0.0)
+Build-Depends-Indep: python-support (>= 0.5.3)
+Standards-Version: 3.8.1
+Homepage: http://github.com/rakuco/cardapio-bandex
+
+Package: python-cardapiobandex
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}
+Provides: ${python:Provides}
+Description: Parser for State University of Campinas' restaurant's menu.
+ This is a library to parse State University of Campinas's university
+ restaurant's menu.
