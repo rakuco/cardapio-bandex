@@ -1,0 +1,9 @@
+CardapioBandex
+Copyright (c) 2009 Raphael Kubo da Costa <kubito@gmail.com>
+===========================================================
+
+This is a Python library to parse State University of Campinas' (www.unicamp.br) university restaurant's menu (http://www.prefeitura.unicamp.br/servicos.php?servID=119).
+
+It can be used to then send the menu via SMS or e-mail to students or do whatever kind of crazy manipulation you want to.
+
+This library depends on BeautifulSoup (version 3+, I guess), which can be obtained from http://www.crummy.com/software/BeautifulSoup.
