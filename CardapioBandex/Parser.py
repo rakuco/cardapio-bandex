@@ -81,7 +81,7 @@ class Parser(object):
       match = re.match(r'\s*([\w\s]+):\s*(.+)', self.__getTagText(item))
 
       if match:
-        key = keyTranslations[match.group(1).lower()]
+        key = keyTranslations[match.group(1).lower().strip()]
         menu[key] = match.group(2)
 
     # In the end, we shall have a dictionary with the following keys:
